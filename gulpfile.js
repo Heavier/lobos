@@ -14,7 +14,7 @@ gulp.task('styles', function(){
     gulp.src(sassFiles)
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(notify("compilando SCSS"))
-        .pipe(gulp.dest('./')); // output to theme root
+        .pipe(gulp.dest('./public/stylesheets/')); // output to theme root
 });
 
 //Minifica JS
