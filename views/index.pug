@@ -1,5 +1,31 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container
+    .row
+        .col-md-12
+            .logo
+        .col-md-12
+            form.login
+                .container-fluid
+                    .row
+                        .col-md-12
+                            label Nombre de usuario
+                                input(
+                                    type="text"
+                                    name="usuario"
+                                )
+
+                    .row
+                        .col-sm-8
+                            label Código de sala
+                                input(
+                                    type="number"
+                                )
+                        .col-sm-4
+                            .bt-login-box
+                                input(
+                                    type="submit"
+                                    name="entrar"
+                                    value="entrar"
+                                )

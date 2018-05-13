@@ -13,7 +13,6 @@ var sassFiles = './assets/scss/**/*.scss',
 gulp.task('styles', function(){
     gulp.src(sassFiles)
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(notify("compilando SCSS"))
         .pipe(gulp.dest('./public/stylesheets/')); // output to theme root
 });
 
@@ -22,7 +21,6 @@ gulp.task('minificar-js', function() {
    return gulp.src(['./assets/js/lib/jquery.min.js','./assets/js/lib/bootstrap.min.js','./assets/js/*.js'])
       .pipe(concat('main.js'))
       .pipe(uglify())
-      .pipe(notify("unificando JS"))
       .pipe(gulp.dest(jsDest));
 });
 
