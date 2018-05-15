@@ -6,7 +6,7 @@ var notify = require("gulp-notify");
 
 //style paths
 var sassFiles = './assets/scss/**/*.scss',
-    jsDest = './assets/js-compilado/',
+    jsDest = './public/javascripts',
     jsAUnir = './assets/js/**/*.js';
 
 // Compilación archivos SCSS

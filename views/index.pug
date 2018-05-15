@@ -13,7 +13,8 @@ block content
                             label Nombre de usuario
                                 input(
                                     type="text"
-                                    name="usuario"
+                                    id="username"
+                                    name="username"
                                 )
 
                     .row
@@ -26,6 +27,15 @@ block content
                             .bt-login-box
                                 input(
                                     type="submit"
-                                    name="entrar"
-                                    value="entrar"
+                                    name="login"
+                                    value="log in"
                                 )
+    footer
+        script(
+            type='text/javascript'
+            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"
+        )
+        script(
+            type='text/javascript'
+            src="/javascripts/main.js"
+        )
