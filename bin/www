@@ -10,6 +10,7 @@ var http = require('http');
 var express = require('express');
 var router = express.Router();
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -94,24 +95,28 @@ function onListening() {
 }
 
 
+
+
+
+
 // SOCKET.IO
-
-var io = require('socket.io').listen(server);
-
-io.on('connection', function(socket){
-    console.log('A new player aproaches.');
-
-    socket.on('login', function(msg){
-        if(msg == 'rojo'){
-            /* GET game page. */
-            console.log('Loading game sir.');
-            var destination = '/game';
-            io.emit('redirect', destination);
-        }
-        console.log('Username: ' + msg);
-    });
-
-    socket.on('disconnect', function(){
-        console.log('A player leaves the arena.');
-    });
-});
+//
+// var io = require('socket.io').listen(server);
+//
+// io.on('connection', function(socket){
+//     console.log('A new player aproaches.');
+//
+//     socket.on('login', function(msg){
+//         if(msg == 'rojo'){
+//             /* GET game page. */
+//             console.log('Loading game sir.');
+//             var destination = '/game';
+//             io.emit('redirect', destination);
+//         }
+//         console.log('Username: ' + msg);
+//     });
+//
+//     socket.on('disconnect', function(){
+//         console.log('A player leaves the arena.');
+//     });
+// });

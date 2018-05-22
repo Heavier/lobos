@@ -6,22 +6,23 @@ block content
         .col-md-12
             .logo
         .col-md-12
-            form.login
+            form.login(action="/game", method="post")
                 .container-fluid
                     .row
                         .col-md-12
-                            label Nombre de usuario
+                            label Username
                                 input(
-                                    type="text"
-                                    id="username"
-                                    name="username"
+                                    type="text",
+                                    id="name",
+                                    name="name"
                                 )
 
                     .row
                         .col-sm-8
-                            label Código de sala
+                            label Room code
                                 input(
-                                    type="number"
+                                    type="number",
+                                    name="room"
                                 )
                         .col-sm-4
                             .bt-login-box
@@ -31,10 +32,7 @@ block content
                                     value="log in"
                                 )
     footer
-        script(
-            type='text/javascript'
-            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"
-        )
+
         script(
             type='text/javascript'
             src="/javascripts/main.js"
