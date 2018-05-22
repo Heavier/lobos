@@ -2,18 +2,10 @@
 @import 'normalize';
 @import 'lib/bootstrap/bootstrap';
 
-h1{
-  color:red;
-}
-
-h2{
-    color: blue;
-}
-
 .logo{
     height: 100px;
     width: 100px;
-    background-color: $color-principal;
+    background-color: $color-main;
     margin: 40px auto;
 }
 
@@ -47,11 +39,105 @@ h2{
             margin: 20px auto;
             border: none;
             text-align: center;
-            background-color: $color-principal;
+            background-color: $color-main;
             border-radius: 2px;
             color: white;
             letter-spacing: 2px;
             font: $tx-boton;
+        }
+    }
+}
+
+
+// -----------------CHAT
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    background: black;
+    margin: 50px 0;
+}
+header, footer {
+    background: black;
+    width: 100%;
+    height: 50px;
+}
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+body > .container-fluid {
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    min-height: calc(100vh - 100px);
+}
+
+.chat-column{
+    font-size: 40px;
+    position: relative;
+    min-height: calc(100vh - 100px);
+    .chat-box{
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        background-color: #222;
+        width: 100%;
+        height: 300px;
+
+        textarea{
+            font-size: $font-medium;
+            width: 100%;
+            resize: none;
+            border-radius: 2px;
+            border: none;
+            padding: 10px;
+            height: 200px;
+        }
+        button{
+            font-size: $font-medium;
+            float: right;
+            letter-spacing: 3px;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            background-color: $color-main;
+            border-radius: 2px;
+        }
+        button:hover{
+            background-color: darken($color-main, 10);
+        }
+    }
+
+    .chat-history{
+        background-color: lightgray;
+        padding: 10px;
+        overflow-y: scroll;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 300px;
+
+        .msg{
+            background-color: white;
+            padding: 10px;
+            font-size: $font-medium;
+            margin: 20px 0;
+            width: 80%;
+            border-radius: 2px;
+        }
+        .my-msg{
+            @extend .msg;
+            background-color: #222;
+            color: white;
+            margin-left: 20%;
         }
     }
 }

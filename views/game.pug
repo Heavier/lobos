@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .container-fluid
+    .row
+        .col-sm-5.col-md-3.col-lg-3
+            .chat-column
+                .chat-history
+                    .msg Hello darkness
+                    .msg Hello darkness
+                    .msg Hello darkness
+                    .my-msg Hello darkness
+                    .msg Hello darkness
+                    .my-msg Hello darkness
+                    .msg Hello darkness
+                    .msg Hello darkness
+                    .msg Hello darkness
+                    .my-msg Hello darkness
+                    .msg Hello darkness
+                    .msg Hello darkness
+                .chat-box
+                    textarea(placeholder="What are you thinking?")
+                    button(type="submit") SEND
+        .col-sm-7.col-md-9.col-lg-9
+            .board-box
+                p BOARD
