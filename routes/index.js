@@ -19,6 +19,10 @@ router.post('/game', function(req, res){
     // Validate name and room
     ok = true;
     if (ok){
+        // router.set('name', name);
+        // router.set('room', room);
+        res.cookie('name', name);
+        res.cookie('room', room);
         res.redirect('/game');
     }
 });
