@@ -118,7 +118,7 @@ body > .container-fluid {
     .chat-history{
         background-color: lightgray;
         padding: 10px;
-        overflow-y: scroll;
+        overflow-y: auto;
         width: 100%;
         position: absolute;
         top: 0;
@@ -137,6 +137,9 @@ body > .container-fluid {
             background-color: #222;
             color: white;
             margin-left: 20%;
+        }
+        >div>div:first-child{
+            opacity: .6;
         }
     }
 }
