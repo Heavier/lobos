@@ -2,9 +2,11 @@ $(document).ready(function() {
     var socket = io.connect();
 
     var name = getCookie("name");
+    var room = getCookie("room");
 
     socket.on('connect', function() {
         socket.emit('addUser', name);
+        socket.emit('switchRoom', room);
     });
 
     socket.on('updateChat', function(username, data) {
@@ -16,15 +18,25 @@ $(document).ready(function() {
                 "</div><div>" + data + "</div></div>");
         }
 
-        $('.chat-history').animate({ scrollTop: $(document).height() }, 1000);
+        $('.chat-history').animate({
+            scrollTop: $(document).height()
+        }, 1000);
     });
 
-    $(function() {
-        $("#sendMsg").click(function() {
-            var message = $('#msgContent').val();
-            $('#msgContent').val('');
-            socket.emit('sendChat', message);
-        });
+
+    $("#sendMsg").click(function() {
+        var message = $('#msgContent').val();
+        $('#msgContent').val('');
+        socket.emit('sendChat', message);
+    });
+
+    $('#msgContent').focus();
+
+    $('#msgContent').keypress(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $("#sendMsg").trigger("click");
+        }
     });
 
     function getCookie(cname) {
