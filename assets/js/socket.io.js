@@ -5,8 +5,8 @@ $(document).ready(function() {
     var room = getCookie("room");
 
     socket.on('connect', function() {
-        socket.emit('addUser', name);
-        socket.emit('switchRoom', room);
+        socket.emit('addUser', name, room);
+        // socket.emit('switchRoom', room);
     });
 
     socket.on('updateChat', function(username, data) {
