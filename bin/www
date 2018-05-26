@@ -119,7 +119,7 @@ io.sockets.on('connection', function(socket){
         socket.emit('updateChat', 'SERVER', 'Welcome to the amazing room ' + socket.room + ', a world of madness.');
 		// echo to room 1 that a person has connected to their room
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' is finally here.');
-        socket.emit('updateRooms', rooms, socket.room);
+        // socket.emit('updateRooms', rooms, socket.room);
     });
 
     socket.on('sendChat', function(data){

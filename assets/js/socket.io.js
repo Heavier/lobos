@@ -19,8 +19,7 @@ $(document).ready(function() {
         }
 
         $('.chat-history').animate({
-            scrollTop: $(document).height()
-        }, 1000);
+               scrollTop: $('.chat-history')[0].scrollHeight}, "fast"); 
     });
 
 
