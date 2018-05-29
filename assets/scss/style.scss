@@ -131,6 +131,9 @@ body > .container-fluid {
             margin: 20px 0;
             width: 80%;
             border-radius: 2px;
+            opacity: 0;
+            animation: fadeIn .2s forwards linear;
+            animation-timing-function: ease-in;
         }
         .my-msg{
             @extend .msg;
@@ -140,6 +143,44 @@ body > .container-fluid {
         }
         >div>div:first-child{
             opacity: .6;
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity: 0;
+            }
+            to{
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.board-box{
+
+    .player-box{
+        .player-name{
+            display: inline-block;
+            margin: 0 10px;
+            background-color: #222;
+            color: white;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border-radius: 2px;
+            animation: popName .3s ease 0s 1 normal none running;
+        }
+        @keyframes popName{
+            from{
+                opacity: 0;
+                transform: scale(.8);
+            }
+            50%{
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            to{
+                transform: scale(1);
+            }
         }
     }
 }

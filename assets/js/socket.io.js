@@ -19,7 +19,7 @@ $(document).ready(function() {
         }
 
         $('.chat-history').animate({
-               scrollTop: $('.chat-history')[0].scrollHeight}, "fast"); 
+               scrollTop: $('.chat-history')[0].scrollHeight}, "fast");
     });
 
 
@@ -53,4 +53,14 @@ $(document).ready(function() {
         }
         return "";
     }
+
+
+    socket.on('listUsers', function(usernames){
+        $('.player-box').empty();
+        for (user in usernames){
+            $('.player-box').append("<div class='player-name'>" + user + "</div>");
+
+            console.log("Usuario " + user);
+        }
+    });
 });

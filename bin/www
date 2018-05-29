@@ -116,9 +116,10 @@ io.sockets.on('connection', function(socket){
 		// send client to room 1
         socket.join(socket.room);
 		// echo to client they've connected
-        socket.emit('updateChat', 'SERVER', 'Welcome to the amazing room ' + socket.room + ', a world of madness.');
+        socket.emit('updateChat', 'SERVER', 'Bienvenid@ a la sala ' + socket.room + ', ¡A JUGAR!');
 		// echo to room 1 that a person has connected to their room
-        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' is finally here.');
+        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar.');
+        io.sockets.in(socket.room).emit('listUsers', usernames);
         // socket.emit('updateRooms', rooms, socket.room);
     });
 
@@ -144,7 +145,8 @@ io.sockets.on('connection', function(socket){
     socket.on('disconnect', function(){
         delete usernames[socket.username];
         io.sockets.emit('updateUsers', usernames);
-        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username + ' has gonne, maybe forever.');
+        io.sockets.in(socket.room).emit('listUsers', usernames);
+        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username + ' se ha ido...');
         socket.leave(socket.room);
     });
 });
