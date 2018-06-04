@@ -113,6 +113,9 @@ body > .container-fluid {
         button:hover{
             background-color: darken($color-main, 10);
         }
+        #imReady{
+            float: left;
+        }
     }
 
     .chat-history{
@@ -135,6 +138,16 @@ body > .container-fluid {
             animation: fadeIn .2s forwards linear;
             animation-timing-function: ease-in;
         }
+        .server-msg{
+            @extend .msg;
+            background-color: white;
+            color: #222;
+            border-top: 5px solid #222;
+            margin: 20px 10%;
+            transform-origin: -50% -50%;
+            animation: showDown .2s forwards linear;
+            animation-timing-function: ease-in;
+        }
         .my-msg{
             @extend .msg;
             background-color: #222;
@@ -151,6 +164,19 @@ body > .container-fluid {
             }
             to{
                 opacity: 1;
+            }
+        }
+        @keyframes showDown{
+            from{
+                opacity: 0;
+                transform: rotateX(100deg);
+            }
+            50%{
+                opacity: 1;
+            }
+            to{
+                opacity: 1;
+                transform: rotateX(0deg);
             }
         }
     }

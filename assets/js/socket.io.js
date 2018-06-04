@@ -13,6 +13,9 @@ $(document).ready(function() {
         if (username == name) {
             $(".chat-history").append('<div class="my-msg"><div>' + username +
                 "</div><div>" + data + "</div></div>");
+        } else if(username == "SERVER") {
+            $(".chat-history").append('<div class="server-msg"><div>Narrador</div><div>'
+            + data + '</div></div>');
         } else {
             $(".chat-history").append('<div class="msg"><div>' + username +
                 "</div><div>" + data + "</div></div>");
@@ -36,6 +39,10 @@ $(document).ready(function() {
             e.preventDefault();
             $("#sendMsg").trigger("click");
         }
+    });
+
+    $("#imReady").click(function() {
+        socket.emit('imReady', name, room);
     });
 
     function getCookie(cname) {

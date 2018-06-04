@@ -102,7 +102,7 @@ var io = require('socket.io').listen(server);
 // usernames which are currently connected to the chat
 var usernames = {};
 // rooms which are currently available in chat
-var rooms = ['room1', 'room2', 'room3'];
+// var rooms = ['room1', 'room2', 'room3'];
 
 io.sockets.on('connection', function(socket){
 
@@ -118,7 +118,7 @@ io.sockets.on('connection', function(socket){
 		// echo to client they've connected
         socket.emit('updateChat', 'SERVER', 'Bienvenid@ a la sala ' + socket.room + ', ¡A JUGAR!');
 		// echo to room 1 that a person has connected to their room
-        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar.');
+        socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar');
         // io.sockets.in(socket.room).emit('listUsers', usernames);
         getUsers(roomcode);
         // socket.emit('updateRooms', rooms, socket.room);
@@ -127,6 +127,14 @@ io.sockets.on('connection', function(socket){
 
     socket.on('sendChat', function(data){
         io.sockets.in(socket.room).emit('updateChat', socket.username, data);
+    });
+
+    var readys = {};
+    socket.on('imReady', function(username, roomcode){
+        console.log("GO");
+        io.sockets.in(socket.room).emit('updateChat', 'SERVER', username + ' quiere empezar ya');
+        readys[username] = "#"+roomcode+"#";
+        // seguir
     });
 
     function getUsers(roomcode){
