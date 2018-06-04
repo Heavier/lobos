@@ -112,40 +112,38 @@ io.sockets.on('connection', function(socket){
 		// store the room name in the socket session for this client
         socket.room = roomcode;
 		// add the client's username to the global list
-        usernames[username] = username;
+        usernames[username] = "#"+roomcode+"#";
 		// send client to room 1
         socket.join(socket.room);
 		// echo to client they've connected
         socket.emit('updateChat', 'SERVER', 'Bienvenid@ a la sala ' + socket.room + ', ¡A JUGAR!');
 		// echo to room 1 that a person has connected to their room
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar.');
-        io.sockets.in(socket.room).emit('listUsers', usernames);
+        // io.sockets.in(socket.room).emit('listUsers', usernames);
+        getUsers(roomcode);
         // socket.emit('updateRooms', rooms, socket.room);
+        console.log(usernames);
     });
 
     socket.on('sendChat', function(data){
         io.sockets.in(socket.room).emit('updateChat', socket.username, data);
     });
 
-    // socket.on('switchRoom', function(newroom){
-	// 	// leave the current room (stored in session)
-	// 	socket.leave(socket.room);
-	// 	// join new room, received as function parameter
-	// 	socket.join(newroom);
-	// 	socket.emit('updatechat', 'SERVER', 'You open the door, in front of you the room '+ newroom);
-	// 	// sent message to OLD room
-	// 	socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room.');
-	// 	// update socket session room title
-	// 	socket.room = newroom;
-	// 	socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room.');
-	// 	socket.emit('updaterooms', rooms, newroom);
-	// });
-
+    function getUsers(roomcode){
+        var auxusers = {};
+        for (user in usernames){
+            if (usernames[user].indexOf(roomcode) !== -1){
+                auxusers[user] = user;
+            }
+        }
+        io.sockets.in(socket.room).emit('listUsers', auxusers);
+    }
 
     socket.on('disconnect', function(){
         delete usernames[socket.username];
-        io.sockets.emit('updateUsers', usernames);
-        io.sockets.in(socket.room).emit('listUsers', usernames);
+        // io.sockets.in(socket.room).emit('deleteUser', socket.username);
+        // io.sockets.in(socket.room).emit('listUsers', usernames);
+        getUsers(socket.room);
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username + ' se ha ido...');
         socket.leave(socket.room);
     });
