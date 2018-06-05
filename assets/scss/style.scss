@@ -194,6 +194,13 @@ body > .container-fluid {
             padding: 10px 20px;
             border-radius: 2px;
             animation: popName .3s ease 0s 1 normal none running;
+
+            &.teamA{
+                background-color: lightblue;
+            }
+            &.teamB{
+                background-color: pink;
+            }
         }
         @keyframes popName{
             from{

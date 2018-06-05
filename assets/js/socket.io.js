@@ -65,9 +65,15 @@ $(document).ready(function() {
     socket.on('listUsers', function(usernames){
         $('.player-box').empty();
         for (user in usernames){
-            $('.player-box').append("<div class='player-name'>" + user + "</div>");
+            if (usernames[user].indexOf("#A#") !== -1){
+                $('.player-box').append("<div class='player-name teamA'>" + user + "</div>");
+            }else if(usernames[user].indexOf("#B#") !== -1){
+                $('.player-box').append("<div class='player-name teamB'>" + user + "</div>");
+            }else{
+                $('.player-box').append("<div class='player-name'>" + user + "</div>");
+            }
 
-            console.log("Usuario " + user);
+            console.log("Usuario " + usernames[user]);
         }
     });
 });

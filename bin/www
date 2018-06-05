@@ -129,21 +129,52 @@ io.sockets.on('connection', function(socket){
         io.sockets.in(socket.room).emit('updateChat', socket.username, data);
     });
 
-    var readys = {};
+
     socket.on('imReady', function(username, roomcode){
-        console.log("GO");
         io.sockets.in(socket.room).emit('updateChat', 'SERVER', username + ' quiere empezar ya');
-        readys[username] = "#"+roomcode+"#";
-        // seguir
+        var auxusers = {};
+        for (user in usernames){
+            if (usernames[user].indexOf(roomcode) !== -1){
+                if (user == username){
+                    usernames[user] = "#"+roomcode+"#"+"R#";
+                }
+                auxusers[user] = usernames[user];
+            }
+        }
+        var counter = 0;
+        var size = 0;
+        for (user in auxusers){
+            if (usernames[user].indexOf("#R#") !== -1){
+                counter++;
+            }
+            size++;
+        }
+        if (counter == size && size > 1){
+            io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Comencemos, los equipos son...");
+            var countA = size / 2;
+            counter = 1;
+            for (user in auxusers){
+                if (usernames[user].indexOf("#A#") == -1 && counter <= countA){
+                    counter++;
+                    usernames[user] = "#"+roomcode+"#"+"R#"+"A#";
+                }else{
+                    usernames[user] = "#"+roomcode+"#"+"R#"+"B#";
+                }
+            }
+        }
+        console.log("Usernames:");
+        console.log(usernames);
+        getUsers(roomcode);
     });
 
     function getUsers(roomcode){
         var auxusers = {};
         for (user in usernames){
             if (usernames[user].indexOf(roomcode) !== -1){
-                auxusers[user] = user;
+                auxusers[user] = usernames[user];
             }
         }
+        console.log(auxusers);
         io.sockets.in(socket.room).emit('listUsers', auxusers);
     }
 
