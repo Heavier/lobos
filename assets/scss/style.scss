@@ -182,37 +182,76 @@ body > .container-fluid {
     }
 }
 
-.board-box{
+.player-box{
+    .player-name{
+        display: inline-block;
+        margin: 0 10px;
+        background-color: #222;
+        color: white;
+        letter-spacing: 2px;
+        padding: 10px 20px;
+        border-radius: 2px;
+        animation: popName .3s ease 0s 1 normal none running;
 
-    .player-box{
-        .player-name{
-            display: inline-block;
-            margin: 0 10px;
-            background-color: #222;
-            color: white;
-            letter-spacing: 2px;
-            padding: 10px 20px;
-            border-radius: 2px;
-            animation: popName .3s ease 0s 1 normal none running;
-
-            &.teamA{
-                background-color: lightblue;
-            }
-            &.teamB{
-                background-color: pink;
-            }
+        &.teamA{
+            background-color: lightblue;
         }
-        @keyframes popName{
+        &.teamB{
+            background-color: pink;
+        }
+    }
+    @keyframes popName{
+        from{
+            opacity: 0;
+            transform: scale(.8);
+        }
+        50%{
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        to{
+            transform: scale(1);
+        }
+    }
+}
+.board-box{
+    .word{
+        margin: 20px;
+        height: 120px;
+        width: 210px;
+        background-color: #222;
+        border-radius: 2px;
+        position: relative;
+        display: inline-block;
+        // perspective: 240px;
+        color: white;
+        animation: showCard 1s ease-in-out 0s 1 normal both running;
+        p{
+            margin: 0;
+            font-size: 2em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes showCard{
             from{
                 opacity: 0;
-                transform: scale(.8);
+                color: #222;
+                // transform: rotateY(-190deg);
+                transform: perspective(500px) rotateY(-190deg);
             }
-            50%{
+            30%{
                 opacity: 1;
-                transform: scale(1.1);
+            }
+            40%{
+                color: #222;
+            }
+            80%{
+                transform: perspective(500px) rotateY(10deg)
             }
             to{
-                transform: scale(1);
+                transform: perspective(500px) rotateY(0deg)
             }
         }
     }

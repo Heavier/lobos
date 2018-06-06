@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('lobos:server');
 var http = require('http');
+const fs = require('fs');
 
 
 
@@ -150,7 +151,7 @@ io.sockets.on('connection', function(socket){
             size++;
         }
         if (counter == size && size > 1){
-            io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Comencemos, los equipos son...");
+            io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Comencemos");
             var countA = size / 2;
             counter = 1;
             for (user in auxusers){
@@ -161,10 +162,13 @@ io.sockets.on('connection', function(socket){
                     usernames[user] = "#"+roomcode+"#"+"R#"+"B#";
                 }
             }
+            getWords();
+        }else{
+            // io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Temo ser yo quien diga esto pero... faltan jugadores");
         }
-        console.log("Usernames:");
-        console.log(usernames);
         getUsers(roomcode);
+
+
     });
 
     function getUsers(roomcode){
@@ -174,8 +178,28 @@ io.sockets.on('connection', function(socket){
                 auxusers[user] = usernames[user];
             }
         }
+        console.log("Auxusers:");
         console.log(auxusers);
         io.sockets.in(socket.room).emit('listUsers', auxusers);
+    }
+
+    function getWords(){
+        fs.readFile('./public/diccionario/diccionario.json', (err, data) => {
+            if (err) throw err;
+            let word = JSON.parse(data);
+            var words = [];
+            var randoms = [];
+            for (var i = 1; i <= 15; i++){
+                // Cambiar max 25 si añado palabras o max = numero de palabras actual.
+                var rn = Math.floor(Math.random() * (word.length - 1 + 1)) + 1;
+                while (randoms.indexOf(rn) !== -1){
+                    rn = Math.floor(Math.random() * (word.length - 1 + 1)) + 1;
+                }
+                randoms.push(rn);
+                words.push(word[rn-1]);
+            }
+            io.sockets.in(socket.room).emit('listWords', words);
+        });
     }
 
     socket.on('disconnect', function(){

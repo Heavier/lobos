@@ -76,4 +76,19 @@ $(document).ready(function() {
             console.log("Usuario " + usernames[user]);
         }
     });
+
+    socket.on('listWords', function(words){
+        $('.board-box').empty();
+        console.log(words);
+        // for (word in words){
+        //     $('.board-box').append("<div class='word'>" + words[word]+ "</div>");
+        //     console.log(word);
+        // }
+        for (var i = 0; i < words.length; i++) {
+            $('.board-box').append("<div class='word'>" +
+            "<p>" + words[i].palabra + "</p>" +
+            "</div>");
+        }
+        console.log(typeof words);
+    });
 });
