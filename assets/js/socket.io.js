@@ -6,7 +6,6 @@ $(document).ready(function() {
 
     socket.on('connect', function() {
         socket.emit('addUser', name, room);
-        // socket.emit('switchRoom', room);
     });
 
     socket.on('updateChat', function(username, data) {
@@ -43,6 +42,9 @@ $(document).ready(function() {
 
     $("#imReady").click(function() {
         socket.emit('imReady', name, room);
+        $(this).text("PASAR");
+        $(this).attr("id", "nextTurn");
+        $(this).unbind( "click" );
     });
 
     function getCookie(cname) {
@@ -73,22 +75,38 @@ $(document).ready(function() {
                 $('.player-box').append("<div class='player-name'>" + user + "</div>");
             }
 
-            console.log("Usuario " + usernames[user]);
         }
     });
 
-    socket.on('listWords', function(words){
+
+    socket.on('listWords', function(words, auxusers){
         $('.board-box').empty();
-        console.log(words);
-        // for (word in words){
-        //     $('.board-box').append("<div class='word'>" + words[word]+ "</div>");
-        //     console.log(word);
-        // }
-        for (var i = 0; i < words.length; i++) {
-            $('.board-box').append("<div class='word'>" +
-            "<p>" + words[i].palabra + "</p>" +
-            "</div>");
+        /*
+            Lista de palabras del usuario si es jefe.
+        */
+        var correctWords = [{a: 'a'}];
+        for (user in auxusers) {
+            if (user == name && auxusers[user].indexOf("#J") !== -1) {
+                var a = auxusers[user].indexOf("@");
+                var b = auxusers[user].lastIndexOf("@");
+                var res = auxusers[user].substring(a, b);
+                correctWords = res.split("@");
+            }
         }
-        console.log(typeof words);
+
+        for (var i = 0; i < words.length; i++) {
+            /*
+                Comprueba si es una palabra normal o es de las correctas.
+            */
+            if (correctWords.indexOf(words[i].palabra) !== -1){
+                $('.board-box').append("<div class='word this-one'>" +
+                "<p>" + words[i].palabra + "</p>" +
+                "</div>");
+            }else{
+                $('.board-box').append("<div class='word'>" +
+                "<p>" + words[i].palabra + "</p>" +
+                "</div>");
+            }
+        }
     });
 });

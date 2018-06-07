@@ -28,7 +28,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, function(){
+server.listen(port, function() {
     console.log('Listening on port 5000, welcome boss.');
 });
 server.on('error', onError);
@@ -39,19 +39,19 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+    var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -59,27 +59,27 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    var bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -87,11 +87,11 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    var addr = server.address();
+    var bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
 
 module.exports = server;
@@ -105,20 +105,20 @@ var usernames = {};
 // rooms which are currently available in chat
 // var rooms = ['room1', 'room2', 'room3'];
 
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', function(socket) {
 
-    socket.on('addUser', function(username, roomcode){
+    socket.on('addUser', function(username, roomcode) {
         // store the username in the socket session for this client
         socket.username = username;
-		// store the room name in the socket session for this client
+        // store the room name in the socket session for this client
         socket.room = roomcode;
-		// add the client's username to the global list
-        usernames[username] = "#"+roomcode+"#";
-		// send client to room 1
+        // add the client's username to the global list
+        usernames[username] = "#" + roomcode + "#";
+        // send client to room 1
         socket.join(socket.room);
-		// echo to client they've connected
+        // echo to client they've connected
         socket.emit('updateChat', 'SERVER', 'Bienvenid@ a la sala ' + socket.room + ', ¡A JUGAR!');
-		// echo to room 1 that a person has connected to their room
+        // echo to room 1 that a person has connected to their room
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar');
         // io.sockets.in(socket.room).emit('listUsers', usernames);
         getUsers(roomcode);
@@ -126,55 +126,68 @@ io.sockets.on('connection', function(socket){
         console.log(usernames);
     });
 
-    socket.on('sendChat', function(data){
+    socket.on('sendChat', function(data) {
         io.sockets.in(socket.room).emit('updateChat', socket.username, data);
     });
 
 
-    socket.on('imReady', function(username, roomcode){
+    socket.on('imReady', function(username, roomcode) {
         io.sockets.in(socket.room).emit('updateChat', 'SERVER', username + ' quiere empezar ya');
         var auxusers = {};
-        for (user in usernames){
-            if (usernames[user].indexOf(roomcode) !== -1){
-                if (user == username){
-                    usernames[user] = "#"+roomcode+"#"+"R#";
+        for (user in usernames) {
+            if (usernames[user].indexOf(roomcode) !== -1) {
+                if (user == username) {
+                    usernames[user] = "#" + roomcode + "#" + "R#";
                 }
                 auxusers[user] = usernames[user];
             }
         }
         var counter = 0;
         var size = 0;
-        for (user in auxusers){
-            if (usernames[user].indexOf("#R#") !== -1){
+        for (user in auxusers) {
+            if (usernames[user].indexOf("#R#") !== -1) {
                 counter++;
             }
             size++;
         }
-        if (counter == size && size > 1){
+        if (counter == size && size >= 4) {
             io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Comencemos");
             var countA = size / 2;
             counter = 1;
-            for (user in auxusers){
-                if (usernames[user].indexOf("#A#") == -1 && counter <= countA){
+            firstIsBossA = true;
+            firstIsBossB = true;
+            for (user in auxusers) {
+                /*
+                    Le asigna el equipo A a la mitad de los jugadores y el B a los restantes.
+                    A cada primer usuario de cada equipo se le dará el título de amo y señor. Jefe.
+                */
+                if (usernames[user].indexOf("#A#") == -1 && counter <= countA) {
                     counter++;
-                    usernames[user] = "#"+roomcode+"#"+"R#"+"A#";
-                }else{
-                    usernames[user] = "#"+roomcode+"#"+"R#"+"B#";
+                    if (firstIsBossA) {
+                        usernames[user] = "#" + roomcode + "#R#A#JA#";
+                        firstIsBossA = false;
+                    } else {
+                        usernames[user] = "#" + roomcode + "#R#A#";
+                    }
+                } else {
+                    if (firstIsBossB) {
+                        usernames[user] = "#" + roomcode + "#R#B#JB#";
+                        firstIsBossB = false;
+                    } else {
+                        usernames[user] = "#" + roomcode + "#R#B#";
+                    }
                 }
             }
-            getWords();
-        }else{
+            getWords(roomcode);
+        } else {
             // io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Temo ser yo quien diga esto pero... faltan jugadores");
         }
-        getUsers(roomcode);
-
-
     });
 
-    function getUsers(roomcode){
+    function getUsers(roomcode) {
         var auxusers = {};
-        for (user in usernames){
-            if (usernames[user].indexOf(roomcode) !== -1){
+        for (user in usernames) {
+            if (usernames[user].indexOf(roomcode) !== -1) {
                 auxusers[user] = usernames[user];
             }
         }
@@ -183,26 +196,85 @@ io.sockets.on('connection', function(socket){
         io.sockets.in(socket.room).emit('listUsers', auxusers);
     }
 
-    function getWords(){
+    function getAuxUsers(roomcode) {
+        var auxusers = {};
+        for (user in usernames) {
+            if (usernames[user].indexOf(roomcode) !== -1) {
+                auxusers[user] = usernames[user];
+            }
+        }
+        return auxusers;
+    }
+
+    function changeUser(search, value) {
+        for (user in usernames) {
+            if (usernames[user].indexOf(search) !== -1) {
+                usernames[user] = value;
+            }
+        }
+    }
+
+    function getWords(roomcode) {
         fs.readFile('./public/diccionario/diccionario.json', (err, data) => {
             if (err) throw err;
             let word = JSON.parse(data);
             var words = [];
             var randoms = [];
-            for (var i = 1; i <= 15; i++){
-                // Cambiar max 25 si añado palabras o max = numero de palabras actual.
+            for (var i = 1; i <= 15; i++) {
                 var rn = Math.floor(Math.random() * (word.length - 1 + 1)) + 1;
-                while (randoms.indexOf(rn) !== -1){
+                while (randoms.indexOf(rn) !== -1) {
                     rn = Math.floor(Math.random() * (word.length - 1 + 1)) + 1;
                 }
                 randoms.push(rn);
-                words.push(word[rn-1]);
+                words.push(word[rn - 1]);
             }
-            io.sockets.in(socket.room).emit('listWords', words);
+
+            /*
+                Toma las 3 primeras palabras y se las ancla al dato del jefe A,
+                toma las 3 siguientes y para el jefe B.
+                Desordena el array.
+            */
+            var winWordsA = "@";
+            for (var i = 1; i <= 3; i++) {
+                winWordsA += words[i].palabra + "@";
+            }
+            var winWordsB = "@";
+            for (var i = 4; i <= 6; i++) {
+                winWordsB += words[i].palabra + "@";
+            }
+
+            changeUser("#JA#", "#" + roomcode + "#R#A#JA#" + winWordsA);
+            changeUser("#JB#", "#" + roomcode + "#R#B#JB#" + winWordsB);
+
+            console.log(usernames);
+            io.sockets.in(socket.room).emit('listWords', shuffle(words), getAuxUsers(roomcode));
+
+
+            getUsers(roomcode);
         });
     }
 
-    socket.on('disconnect', function(){
+    function shuffle(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    socket.on('disconnect', function() {
         delete usernames[socket.username];
         // io.sockets.in(socket.room).emit('deleteUser', socket.username);
         // io.sockets.in(socket.room).emit('listUsers', usernames);

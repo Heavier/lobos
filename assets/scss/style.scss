@@ -113,7 +113,7 @@ body > .container-fluid {
         button:hover{
             background-color: darken($color-main, 10);
         }
-        #imReady{
+        #imReady, #nextTurn{
             float: left;
         }
     }
@@ -220,12 +220,20 @@ body > .container-fluid {
         height: 120px;
         width: 210px;
         background-color: #222;
+        border: 1px solid #222;
         border-radius: 2px;
         position: relative;
         display: inline-block;
         // perspective: 240px;
         color: white;
         animation: showCard 1s ease-in-out 0s 1 normal both running;
+
+        &.this-one{
+            background-color:  $color-main;
+            color: #222;
+            border: 1px solid #222;
+        }
+
         p{
             margin: 0;
             font-size: 2em;
