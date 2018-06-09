@@ -100,22 +100,36 @@ $(document).ready(function() {
                 Comprueba si es una palabra normal o es de las correctas.
             */
             if (correctWords.indexOf(words[i].palabra) !== -1){
-                $('.board-box').append("<button type='button' class='word this-one'>" +
+                $('.board-box').append("<button type='button' id="+words[i].palabra+" class='word this-one'>" +
                 "<p>" + words[i].palabra + "</p>" +
                 "</button>");
             }else{
-                $('.board-box').append("<button type='button' class='word'>" +
+                $('.board-box').append("<button type='button' id="+words[i].palabra+" class='word'>" +
                 "<p>" + words[i].palabra + "</p>" +
                 "</button>");
             }
         }
 
-        $(".word.this-one").click(function(){
+        $(".word").click(function(){
             console.log("click");
             var word = $(this).find("p").text();
             socket.emit('checkCorrect', name, room, word);
         });
     });
 
+    socket.on('newPoints', function(team, newpoints){
+        if (team == "A"){
+            $(".points-box .teamA h2").text(newpoints);
+        }else{
+            $(".points-box .teamB h2").text(newpoints);
+        }
+    });
+    socket.on('flipCard', function(word, correct){
+        if (correct){
+            $('#' + word).addClass("correct");
+        }else{
+            $('#' + word).addClass("incorrect");
+        }
+    });
 
 });

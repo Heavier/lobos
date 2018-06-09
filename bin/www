@@ -219,24 +219,24 @@ io.sockets.on('connection', function(socket) {
             if (user == search) {
                 if (usernames[user].indexOf("%") !== -1) {
                     var a = usernames[user].indexOf("%")+1;
-                    console.log(a);
                     var b = usernames[user].lastIndexOf("%");
-                    console.log(b);
                     var oldpoints = usernames[user].substring(a, b);
-                    console.log(oldpoints);
                     var newpoints = parseInt(oldpoints) + 10;
-                    console.log(newpoints);
                     usernames[user] = usernames[user].replace("%"+oldpoints+"%", "%"+newpoints+"%");
-                    console.log(usernames[user]);
+                    return newpoints;
                 }
             }
         }
     }
 
-    function changeUserWords(search, value) {
+
+    function changeUserWords(search, word) {
         for (user in usernames) {
-            if (usernames[user].indexOf(search) !== -1) {
-                usernames[user] = value;
+            if (user == search) {
+                if (usernames[user].indexOf("@"+word+"@") !== -1) {
+                    usernames[user] = usernames[user].replace("@"+word+"@", "@");
+                    console.log(usernames[user]);
+                }
             }
         }
     }
@@ -308,7 +308,14 @@ io.sockets.on('connection', function(socket) {
             if (auxusers[user].indexOf("#J") !== -1) {
                 if (auxusers[user].indexOf(word) !== -1){
                     // Palabra correcta
-                    changeUserPoints(user);
+                    var team = "A";
+                    if (auxusers[user].indexOf("#JB#") !== -1) {
+                        team = "B";
+                    }
+                    var newpoints = changeUserPoints(user);
+                    changeUserWords(user, word);
+                    io.sockets.in(socket.room).emit('newPoints', team, newpoints);
+                    io.sockets.in(socket.room).emit('flipCard', word, true);
                 }else{
                     // Palabra incorrecta
                 }

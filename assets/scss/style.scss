@@ -182,13 +182,38 @@ body > .container-fluid {
     }
 }
 
+.points-box{
+    width: 300px;
+    text-align: center;
+    color: white;
+    font-size: 1.8em;
+    float: left;
+
+    .teamA{
+        display: inline-block;
+        width: 50%;
+        background-color: $color-teamA;
+        border-radius: 5px 0 0 5px;
+    }
+    .teamB{
+        @extend .teamA;
+        background-color: $color-teamB;
+        border-radius: 0 5px 5px 0;
+    }
+    >div h2{
+        margin: 5px 0;
+    }
+}
+
 .player-box{
+    height: 79px;
+    overflow-x: auto;
     .player-name{
         display: inline-block;
         margin: 0 10px;
+        margin-top: 19px;
         background-color: #222;
         color: white;
-        letter-spacing: 2px;
         padding: 10px 20px;
         border-radius: 2px;
         animation: popName .3s ease 0s 1 normal none running;
@@ -220,7 +245,7 @@ body > .container-fluid {
         height: 120px;
         width: 210px;
         background-color: #222;
-        border: 1px solid #222;
+        border: 2px solid #222;
         border-radius: 2px;
         position: relative;
         display: inline-block;
@@ -250,6 +275,30 @@ body > .container-fluid {
             background-color:  $color-main;
             color: #222;
             border: 1px solid #222;
+        }
+
+        &.correct{
+            border: 2px solid #222;
+            color: #222;
+            background-color: white;
+            animation: none;
+            box-shadow: none;
+
+            &:hover{
+                transform: none;
+            }
+        }
+
+        &.incorrect{
+            border: 2px solid #222;
+            color: #222;
+            animation: none;
+            box-shadow: none;
+
+
+            &:hover{
+                transform: none;
+            }
         }
 
         p{
@@ -283,5 +332,7 @@ body > .container-fluid {
                 transform: perspective(500px) rotateY(0deg) scale(1);
             }
         }
+
+
     }
 }
