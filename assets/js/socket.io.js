@@ -47,6 +47,7 @@ $(document).ready(function() {
         $(this).unbind( "click" );
     });
 
+
     function getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
@@ -99,14 +100,22 @@ $(document).ready(function() {
                 Comprueba si es una palabra normal o es de las correctas.
             */
             if (correctWords.indexOf(words[i].palabra) !== -1){
-                $('.board-box').append("<div class='word this-one'>" +
+                $('.board-box').append("<button type='button' class='word this-one'>" +
                 "<p>" + words[i].palabra + "</p>" +
-                "</div>");
+                "</button>");
             }else{
-                $('.board-box').append("<div class='word'>" +
+                $('.board-box').append("<button type='button' class='word'>" +
                 "<p>" + words[i].palabra + "</p>" +
-                "</div>");
+                "</button>");
             }
         }
+
+        $(".word.this-one").click(function(){
+            console.log("click");
+            var word = $(this).find("p").text();
+            socket.emit('checkCorrect', name, room, word);
+        });
     });
+
+
 });

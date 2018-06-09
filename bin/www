@@ -164,14 +164,14 @@ io.sockets.on('connection', function(socket) {
                 if (usernames[user].indexOf("#A#") == -1 && counter <= countA) {
                     counter++;
                     if (firstIsBossA) {
-                        usernames[user] = "#" + roomcode + "#R#A#JA#";
+                        usernames[user] = "#" + roomcode + "#R#A#JA#%0%";
                         firstIsBossA = false;
                     } else {
                         usernames[user] = "#" + roomcode + "#R#A#";
                     }
                 } else {
                     if (firstIsBossB) {
-                        usernames[user] = "#" + roomcode + "#R#B#JB#";
+                        usernames[user] = "#" + roomcode + "#R#B#JB#%0%";
                         firstIsBossB = false;
                     } else {
                         usernames[user] = "#" + roomcode + "#R#B#";
@@ -214,6 +214,33 @@ io.sockets.on('connection', function(socket) {
         }
     }
 
+    function changeUserPoints(search) {
+        for (user in usernames) {
+            if (user == search) {
+                if (usernames[user].indexOf("%") !== -1) {
+                    var a = usernames[user].indexOf("%")+1;
+                    console.log(a);
+                    var b = usernames[user].lastIndexOf("%");
+                    console.log(b);
+                    var oldpoints = usernames[user].substring(a, b);
+                    console.log(oldpoints);
+                    var newpoints = parseInt(oldpoints) + 10;
+                    console.log(newpoints);
+                    usernames[user] = usernames[user].replace("%"+oldpoints+"%", "%"+newpoints+"%");
+                    console.log(usernames[user]);
+                }
+            }
+        }
+    }
+
+    function changeUserWords(search, value) {
+        for (user in usernames) {
+            if (usernames[user].indexOf(search) !== -1) {
+                usernames[user] = value;
+            }
+        }
+    }
+
     function getWords(roomcode) {
         fs.readFile('./public/diccionario/diccionario.json', (err, data) => {
             if (err) throw err;
@@ -235,16 +262,16 @@ io.sockets.on('connection', function(socket) {
                 Desordena el array.
             */
             var winWordsA = "@";
-            for (var i = 1; i <= 3; i++) {
+            for (var i = 1; i <= 5; i++) {
                 winWordsA += words[i].palabra + "@";
             }
             var winWordsB = "@";
-            for (var i = 4; i <= 6; i++) {
+            for (var i = 6; i <= 10; i++) {
                 winWordsB += words[i].palabra + "@";
             }
 
-            changeUser("#JA#", "#" + roomcode + "#R#A#JA#" + winWordsA);
-            changeUser("#JB#", "#" + roomcode + "#R#B#JB#" + winWordsB);
+            changeUser("#JA#", "#" + roomcode + "#R#A#JA#%0%" + winWordsA);
+            changeUser("#JB#", "#" + roomcode + "#R#B#JB#%0%" + winWordsB);
 
             console.log(usernames);
             io.sockets.in(socket.room).emit('listWords', shuffle(words), getAuxUsers(roomcode));
@@ -273,6 +300,26 @@ io.sockets.on('connection', function(socket) {
 
         return array;
     }
+
+
+    socket.on('checkCorrect', function(username, roomcode, word) {
+        var auxusers = getAuxUsers(roomcode);
+        for (user in auxusers) {
+            if (auxusers[user].indexOf("#J") !== -1) {
+                if (auxusers[user].indexOf(word) !== -1){
+                    // Palabra correcta
+                    changeUserPoints(user);
+                }else{
+                    // Palabra incorrecta
+                }
+                if (user !== username){
+                    // El jefe se ha equivocado y ha dado puntos al otro equipo
+                }
+            }else{
+                // usuario no jefe
+            }
+        }
+    });
 
     socket.on('disconnect', function() {
         delete usernames[socket.username];
