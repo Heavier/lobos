@@ -188,15 +188,16 @@ $(document).ready(function() {
     function changeTurn(currentTeam, auxusers){
         startTimer();
         console.log(currentTeam);
+        $("#msgContent").fadeTo("slow", 0.4);
+        $("#nextTurn").prop("disabled",true);
+        $(".word").prop("disabled",true);
         for (user in auxusers) {
             if (user == name && auxusers[user].indexOf("#"+currentTeam+"#") !== -1) {
                 console.log("Este usuario es el del equipo que juega");
                 console.log(user);
                 $(".word").prop("disabled", false);
                 $("#nextTurn").prop("disabled", false);
-            }else{
-                $("#nextTurn").prop("disabled",true);
-                $(".word").prop("disabled",true);
+                $("#msgContent").fadeTo("slow", 1);
             }
         }
         if(currentTeam == "A"){
