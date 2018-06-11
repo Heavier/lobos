@@ -151,7 +151,7 @@ io.sockets.on('connection', function(socket) {
             size++;
         }
         if (counter == size && size >= 4) {
-            io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Comencemos");
+            io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Genial, empieza el equipo A.");
             var countA = size / 2;
             counter = 1;
             firstIsBossA = true;
@@ -257,8 +257,8 @@ io.sockets.on('connection', function(socket) {
             }
 
             /*
-                Toma las 3 primeras palabras y se las ancla al dato del jefe A,
-                toma las 3 siguientes y para el jefe B.
+                Toma las 5 primeras palabras y se las ancla al dato del jefe A,
+                toma las 5 siguientes y para el jefe B.
                 Desordena el array.
             */
             var winWordsA = "@";
@@ -315,9 +315,10 @@ io.sockets.on('connection', function(socket) {
                     var newpoints = changeUserPoints(user);
                     changeUserWords(user, word);
                     io.sockets.in(socket.room).emit('newPoints', team, newpoints);
-                    io.sockets.in(socket.room).emit('flipCard', word, true);
+                    io.sockets.in(socket.room).emit('flipCard',team, word, true);
                 }else{
                     // Palabra incorrecta
+                    io.sockets.in(socket.room).emit('flipCard', word, false);
                 }
                 if (user !== username){
                     // El jefe se ha equivocado y ha dado puntos al otro equipo
@@ -328,10 +329,43 @@ io.sockets.on('connection', function(socket) {
         }
     });
 
+    socket.on('rotateTurn', function changeTurn(username, roomcode, team){
+        console.log("Cambio de turno solicitado");
+        io.sockets.in(socket.room).emit('addToPassButton', team);
+        var auxusers = {};
+        for (user in usernames) {
+            if (usernames[user].indexOf(roomcode) !== -1) {
+                if (user == username) {
+                    usernames[user] = usernames[user]+"#P#";
+                }
+                auxusers[user] = usernames[user];
+            }
+        }
+        var counter = 0;
+        var size = 0;
+        for (user in auxusers) {
+            if (usernames[user].indexOf("#P#") !== -1) {
+                counter++;
+            }
+            if (usernames[user].indexOf("#"+team+"#") !== -1){
+                size++;
+            }
+        }
+
+        if (counter == size) {
+            console.log("Turno cambiado a " + team );
+            socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', 'Es el turno del equipo ' + team +".");
+            io.sockets.in(socket.room).emit('changeTurn', team, auxusers);
+            for (user in usernames) {
+                if (usernames[user].indexOf(roomcode) !== -1) {
+                    usernames[user] = usernames[user].replace("#P#", "");
+                }
+            }
+        }
+    });
+
     socket.on('disconnect', function() {
         delete usernames[socket.username];
-        // io.sockets.in(socket.room).emit('deleteUser', socket.username);
-        // io.sockets.in(socket.room).emit('listUsers', usernames);
         getUsers(socket.room);
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username + ' se ha ido...');
         socket.leave(socket.room);

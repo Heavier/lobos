@@ -101,17 +101,23 @@ body > .container-fluid {
             height: 200px;
         }
         button{
-            font-size: $font-medium;
+            font-size: $font-large;
             float: right;
             letter-spacing: 3px;
-            color: white;
             border: none;
-            padding: 5px 10px;
-            background-color: $color-main;
+            padding: 4px 4px;
             border-radius: 2px;
+            background-image: url("../images/send.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-color: transparent;
+            height: 53px;
+            width: 140px;
+            font-weight: 800;
         }
-        button:hover{
-            background-color: darken($color-main, 10);
+        button:active{
+            transform: translateY(4px);
+            background-image: url("../images/sendActive.png");
         }
         #imReady, #nextTurn{
             float: left;
@@ -202,6 +208,28 @@ body > .container-fluid {
     }
     >div h2{
         margin: 5px 0;
+        animation: points .4s ease-in-out 0s 1 normal none running;
+        opacity: 1;
+    }
+
+    @keyframes points{
+        from{
+            opacity: 1;
+            transform: translateX(0px);
+        }
+        50%{
+            opacity: 0;
+            transform: translateX(40px);
+        }
+        51%{
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+
+        to{
+            opacity: 1;
+            transform: translateX(0px);
+        }
     }
 }
 
@@ -271,22 +299,34 @@ body > .container-fluid {
             box-shadow: 5px 10px 60px #222;
         }
 
-        &.this-one{
-            background-color:  $color-main;
-            color: #222;
-            border: 1px solid #222;
+        &.this-oneA{
+            background-color: #222;
+            color: white;
+            border: 2px solid $color-teamA;
+            border-top: 10px solid $color-teamA;
+        }
+        &.this-oneB{
+            background-color: #222;
+            color: white;
+            border: 2px solid $color-teamB;
+            border-top: 10px solid $color-teamB;
         }
 
-        &.correct{
+        &.correctA{
             border: 2px solid #222;
             color: #222;
-            background-color: white;
+            background-color: lighten($color-teamA, 10);
             animation: none;
             box-shadow: none;
 
             &:hover{
                 transform: none;
             }
+        }
+        &.correctB{
+            @extend .correctA;
+            background-color: lighten($color-teamB, 10);
+
         }
 
         &.incorrect{
@@ -332,7 +372,22 @@ body > .container-fluid {
                 transform: perspective(500px) rotateY(0deg) scale(1);
             }
         }
+    }
+}
 
+.timer-box{
+    width: 100px;
+    height: 100px;
+    color: white;
+    text-align: center;
+    background-color: #222;
+    border: 2px solid $color-main;
+    border-radius: 100px;
+    margin: 10px;
 
+    #timer{
+        font-size: 4em;
+        font-weight: 100;
+        line-height: 100px;
     }
 }
