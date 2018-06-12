@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     var name = getCookie("name");
     var room = getCookie("room");
-    var nextTeam = "B";
+    var nextTeam = "A";
 
     socket.on('connect', function() {
         socket.emit('addUser', name, room);
@@ -44,12 +44,13 @@ $(document).ready(function() {
 
     $("#imReady").click(function() {
         socket.emit('imReady', name, room);
-        $(this).text("PASAR");
-        $(this).attr("id", "nextTurn");
-        $(this).unbind("click");
-        $(this).click(function(){
-            socket.emit('rotateTurn', name, room, nextTeam);
-        });
+        // $(this).text("PASAR");
+        // $(this).attr("id", "nextTurn");
+        // $(this).unbind("click");
+        // $(this).click(function(){
+        //     socket.emit('rotateTurn', name, room, nextTeam);
+        // });
+        $(this).remove();
     });
 
 
@@ -179,25 +180,27 @@ $(document).ready(function() {
         // Hacer algo con el boton cada vez que alguien del equipo lo pulsa.
     });
 
-    socket.on('changeTurn', function(currentTeam, auxusers) {
+    socket.on('changeTurn', function(currentTeam, failed) {
         // Hacer algo con el boton cada vez que alguien del equipo lo pulsa.
-        changeTurn(currentTeam, auxusers);
+        changeTurn(currentTeam, failed);
     });
 
     var crono = null;
-    function changeTurn(currentTeam, auxusers){
+    function changeTurn(currentTeam, failed){
+        if (failed) stopTimer();
         startTimer();
-        console.log(currentTeam);
         $("#msgContent").fadeTo("slow", 0.4);
         $("#nextTurn").prop("disabled",true);
         $(".word").prop("disabled",true);
-        for (user in auxusers) {
-            if (user == name && auxusers[user].indexOf("#"+currentTeam+"#") !== -1) {
-                console.log("Este usuario es el del equipo que juega");
-                console.log(user);
-                $(".word").prop("disabled", false);
-                $("#nextTurn").prop("disabled", false);
+        for (user in localAuxusers) {
+            if (user == name && localAuxusers[user].indexOf("#"+currentTeam+"#") !== -1) {
+                // console.log("Este usuario es del equipo que juega");
                 $("#msgContent").fadeTo("slow", 1);
+                if (localAuxusers[user].indexOf("#J") !== -1){
+                    // Y además es el jefe
+                    $(".word").prop("disabled", false);
+                    $("#nextTurn").prop("disabled", false);
+                }
             }
         }
         if(currentTeam == "A"){
@@ -212,13 +215,17 @@ $(document).ready(function() {
         $("#timer").text(time-1);
         crono = setTimeout(startTimer, 1000);
         if ( time-1 <= 0 ){
-            clearTimeout(crono);
             stopTimer();
+            timeOver();
         }
     }
 
     function stopTimer(){
+        clearTimeout(crono);
         $("#timer").text("20");
+    }
+
+    function timeOver(){
         for (user in localAuxusers) {
             if (user == name && localAuxusers[user].indexOf("#"+nextTeam+"#") >= 0) {
                 socket.emit('rotateTurn', name, room, nextTeam);
@@ -226,4 +233,8 @@ $(document).ready(function() {
         }
     }
 
+    socket.on('endPlay', function(team) {
+        stopTimer();
+        alert("Se acabó la partida, el equipo " + team + " consiguió la victoria.");
+    });
 });
