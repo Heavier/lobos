@@ -14,7 +14,7 @@ $(document).ready(function() {
             $(".chat-history").append('<div class="my-msg"><div>' + username +
                 "</div><div>" + data + "</div></div>");
         } else if (username == "SERVER") {
-            $(".chat-history").append('<div class="server-msg"><div>Narrador</div><div>' +
+            $(".chat-history").append('<div class="server-msg"><div>Lobo</div><div>' +
                 data + '</div></div>');
         } else {
             $(".chat-history").append('<div class="msg"><div>' + username +
@@ -138,7 +138,6 @@ $(document).ready(function() {
         }
 
         $(".word").click(function() {
-            console.log("click");
             var word = $(this).find("p").text();
             socket.emit('checkCorrect', name, room, word);
         });
@@ -194,7 +193,7 @@ $(document).ready(function() {
         $(".word").prop("disabled",true);
         for (user in localAuxusers) {
             if (user == name && localAuxusers[user].indexOf("#"+currentTeam+"#") !== -1) {
-                // console.log("Este usuario es del equipo que juega");
+                // Este usuario es del equipo que juega
                 $("#msgContent").fadeTo("slow", 1);
                 if (localAuxusers[user].indexOf("#J") !== -1){
                     // Y además es el jefe

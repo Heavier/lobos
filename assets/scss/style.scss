@@ -102,17 +102,22 @@ body > .container-fluid {
     min-height: calc(100vh - 100px);
 }
 
+.container-fluid > .row > div:nth-child(2){
+    padding: 20px;
+}
+
 .chat-column{
     font-size: 40px;
     position: relative;
     min-height: calc(100vh - 100px);
+    border: 2px solid $color-accent;
     .chat-box{
         position: absolute;
         bottom: 0;
         padding: 10px;
         background-color: #222;
         width: 100%;
-        height: 300px;
+        height: 220px;
 
         textarea{
             font-size: $font-medium;
@@ -121,7 +126,7 @@ body > .container-fluid {
             border-radius: 2px;
             border: none;
             padding: 10px;
-            height: 200px;
+            height: 140px;
         }
         button{
             font-size: $font-large;
@@ -164,51 +169,74 @@ body > .container-fluid {
     }
 
     .chat-history{
-        background-color: lightgray;
+        background-color: #eee;
+        box-shadow: 0 0 20px $color-accent;
         padding: 10px;
         overflow-y: auto;
         width: 100%;
         position: absolute;
         top: 0;
-        bottom: 300px;
+        bottom: 220px;
 
         .msg{
             background-color: white;
             padding: 10px;
             font-size: $font-medium;
+            box-shadow: 0 5px 5px -5px #666;
+            color: $color-main-dark;
             margin: 20px 0;
             width: 80%;
             border-radius: 2px;
             opacity: 0;
-            animation: fadeIn .2s forwards linear;
+            animation: showLeft .2s forwards linear;
             animation-timing-function: ease-in;
         }
         .server-msg{
             @extend .msg;
-            background-color: white;
-            color: #222;
-            border-top: 5px solid #222;
-            margin: 20px 10%;
+            background-color: #222;
+            color: white;
+            width: 100%;
+            margin: 20px auto;
             transform-origin: -50% -50%;
             animation: showDown .2s forwards linear;
             animation-timing-function: ease-in;
+            box-shadow: 0 15px 15px -10px #666;
         }
         .my-msg{
             @extend .msg;
-            background-color: #222;
-            color: white;
+            background-color: $color-accent;
+            box-shadow: 0 5px 5px -5px #666;
+            color: $color-main-dark;
             margin-left: 20%;
+            animation: showRight .2s forwards linear;
+
         }
         >div>div:first-child{
-            opacity: .6;
+            opacity: .7;
         }
 
-        @keyframes fadeIn{
+        @keyframes showRight{
             from{
                 opacity: 0;
+                transform-origin: top right;
+                transform: rotateY(-90deg);
             }
             to{
                 opacity: 1;
+                transform-origin: top right;
+                transform: rotateY(0deg);
+            }
+        }
+        @keyframes showLeft{
+            from{
+                opacity: 0;
+                transform-origin: top left;
+                transform: rotateY(-90deg);
+            }
+            to{
+                opacity: 1;
+                transform-origin: top left;
+                transform: rotateY(0deg);
             }
         }
         @keyframes showDown{
@@ -281,13 +309,17 @@ body > .container-fluid {
 }
 
 .player-box{
-    height: 79px;
+    height: 100px;
     overflow-x: auto;
     .player-name{
+        font-size: $font-medium;
         display: inline-block;
         margin: 0 10px;
-        margin-top: 19px;
-        background-color: #222;
+        margin-top: 22px;
+        background-color: #4c6878;
+        box-shadow: inset 4px 4px 0px #2b3c43, inset 8px 8px 0px #3c5560;
+        border: 2px solid $color-accent;
+        font-weight: 600;
         color: white;
         padding: 10px 20px;
         border-radius: 2px;

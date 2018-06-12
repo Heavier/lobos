@@ -29,7 +29,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port, function() {
-    console.log('Listening on port 5000, welcome boss.');
+    console.log('Escuchando por el puerto 5000, un placer verte Lobo.');
 });
 server.on('error', onError);
 server.on('listening', onListening);
@@ -123,7 +123,6 @@ io.sockets.on('connection', function(socket) {
         // io.sockets.in(socket.room).emit('listUsers', usernames);
         getUsers(roomcode);
         // socket.emit('updateRooms', rooms, socket.room);
-        console.log(usernames);
     });
 
     socket.on('sendChat', function(data) {
@@ -191,8 +190,6 @@ io.sockets.on('connection', function(socket) {
                 auxusers[user] = usernames[user];
             }
         }
-        console.log("Auxusers:");
-        console.log(auxusers);
         io.sockets.in(socket.room).emit('listUsers', auxusers);
     }
 
@@ -235,7 +232,6 @@ io.sockets.on('connection', function(socket) {
             if (user == search) {
                 if (usernames[user].indexOf("@" + word + "@") !== -1) {
                     usernames[user] = usernames[user].replace("@" + word + "@", "@");
-                    console.log(usernames[user]);
                 }
             }
         }
@@ -273,7 +269,6 @@ io.sockets.on('connection', function(socket) {
             changeUser("#JA#", "#" + roomcode + "#R#A#JA#%0%" + winWordsA);
             changeUser("#JB#", "#" + roomcode + "#R#B#JB#%0%" + winWordsB);
 
-            console.log(usernames);
             io.sockets.in(socket.room).emit('listWords', shuffle(words), getAuxUsers(roomcode));
 
 
@@ -356,7 +351,6 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('rotateTurn', function changeTurn(username, roomcode, team) {
-        console.log("Cambio de turno solicitado");
         io.sockets.in(socket.room).emit('addToPassButton', team);
         var auxusers = {};
         for (user in usernames) {
@@ -379,7 +373,6 @@ io.sockets.on('connection', function(socket) {
         }
 
         if (counter == size) {
-            console.log("Turno cambiado a " + team);
             io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Es el turno del equipo " + team);
             io.sockets.in(socket.room).emit('changeTurn', team, false);
             for (user in usernames) {
