@@ -172,7 +172,9 @@ $(document).ready(function() {
             }
         } else {
             $('#' + word).addClass("incorrect");
+            console.log("hola soy un falso");
         }
+        console.log(correct);
     });
 
     socket.on('addToPassButton', function(team) {

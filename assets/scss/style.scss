@@ -48,7 +48,7 @@
             background-image: url("../images/shine.png"), url("../images/sprite.png");
             background-position: -136px 0px, 0px 2px;
             background-repeat: no-repeat, no-repeat;
-            background-size: 100%, 440%;
+            background-size: 100%, 878%;
             background-color: transparent;
             height: 50px;
             width: 140px;
@@ -140,7 +140,7 @@ body > .container-fluid {
             background-image: url("../images/shine.png"), url("../images/sprite.png");
             background-position: -136px 0px, 0px 2px;
             background-repeat: no-repeat, no-repeat;
-            background-size: 100%, 440%;
+            background-size: 100%, 878%;
             background-color: transparent;
             height: 50px;
             width: 140px;
@@ -264,9 +264,9 @@ body > .container-fluid {
     background-image:url("../images/sprite.png");
     background-position: 0px -50px;
     background-repeat:no-repeat;
-    background-size: 102%;
+    background-size: 204%;
     background-color: transparent;
-    height: 97px;
+    height: 92px;
     padding: 10px;
     text-transform: uppercase;
     font-weight: 700;
@@ -350,17 +350,21 @@ body > .container-fluid {
     .word{
         margin: 20px;
         height: 120px;
-        width: 210px;
-        background-color: #222;
-        border: 2px solid #222;
+        width: 199px;
         border-radius: 2px;
+        border: none;
         position: relative;
         display: inline-block;
         // perspective: 240px;
-        color: white;
+        background-image:url("../images/sprite.png");
+        background-repeat:no-repeat;
+        background-position: -400px -154px;
+        background-size: 360%;
+        background-color: transparent;
+        color: #222;
         cursor: pointer;
         transition: all .2s ease-in-out;
-        animation: showCard 1s ease-in-out 0s 1 normal none running;
+        animation: showCard 1s ease-in-out 0s 1 normal none;
         transform: perspective(500px) rotateY(0deg) scale(1);
         box-shadow: 0px 0px 0px #333;
         z-index: 1;
@@ -379,23 +383,18 @@ body > .container-fluid {
         }
 
         &.this-oneA{
-            background-color: #222;
-            color: white;
-            border: 2px solid $color-teamA;
-            border-top: 10px solid $color-teamA;
+            color: #222;
+            background-position: 0px -154px;
         }
         &.this-oneB{
-            background-color: #222;
-            color: white;
-            border: 2px solid $color-teamB;
-            border-top: 10px solid $color-teamB;
+            color: #222;
+            background-position: -200px -154px;
         }
 
         &.correctA{
-            border: 2px solid #222;
-            color: #222;
-            background-color: lighten($color-teamA, 10);
-            animation: none;
+            color: transparent;
+            background-position: -0px -275px;
+            animation: unflipCard 1s ease-in-out 0s 1 normal none;
             box-shadow: none;
 
             &:hover{
@@ -404,14 +403,13 @@ body > .container-fluid {
         }
         &.correctB{
             @extend .correctA;
-            background-color: lighten($color-teamB, 10);
+            background-position: -200px -275px;
 
         }
 
         &.incorrect{
-            border: 2px solid #222;
-            color: #222;
-            background-color: #222;
+            @extend .correctA;
+            background-position: -400px -275px;
             animation: none;
             box-shadow: none;
 
@@ -435,7 +433,7 @@ body > .container-fluid {
         @keyframes showCard{
             from{
                 opacity: 0;
-                color: #222;
+                color: transparent;
                 // transform: rotateY(-190deg);
                 transform: perspective(500px) rotateY(-190deg)  scale(1);
             }
@@ -443,7 +441,23 @@ body > .container-fluid {
                 opacity: 1;
             }
             40%{
-                color: #222;
+                color: transparent;
+            }
+            80%{
+                transform: perspective(500px) rotateY(10deg)  scale(1);
+            }
+            to{
+                transform: perspective(500px) rotateY(0deg) scale(1);
+            }
+        }
+        @keyframes unflipCard{
+            from{
+                color: transparent;
+                // transform: rotateY(-190deg);
+                transform: perspective(500px) rotateY(-190deg)  scale(1);
+            }
+            40%{
+                color: transparent;
             }
             80%{
                 transform: perspective(500px) rotateY(10deg)  scale(1);
