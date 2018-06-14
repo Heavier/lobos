@@ -339,7 +339,7 @@ io.sockets.on('connection', function(socket) {
         }
         if (fail) {
             // Palabra incorrecta
-            io.sockets.in(socket.room).emit('flipCard', team, word, false);
+            io.sockets.in(socket.room).emit('flipCard', team, word, pointsToOthers);
             io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Nop, así no. Ahora juega el equipo " + nextTeam);
             io.sockets.in(socket.room).emit('changeTurn', nextTeam, true);
             for (user in usernames) {

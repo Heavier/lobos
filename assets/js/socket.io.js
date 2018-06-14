@@ -14,7 +14,7 @@ $(document).ready(function() {
             $(".chat-history").append('<div class="my-msg"><div>' + username +
                 "</div><div>" + data + "</div></div>");
         } else if (username == "SERVER") {
-            $(".chat-history").append('<div class="server-msg"><div>Lobo</div><div>' +
+            $(".chat-history").append('<div class="server-msg"><div>Narrador</div><div>' +
                 data + '</div></div>');
         } else {
             $(".chat-history").append('<div class="msg"><div>' + username +
@@ -88,6 +88,13 @@ $(document).ready(function() {
 
     var localAuxusers = null;
     socket.on('listWords', function(words, auxusers) {
+
+        // Muestra los elementos ocultos
+        $(".points-box").show();
+        $(".timer-box").show();
+        $(".how-to-box").height(100);
+
+
         localAuxusers = auxusers;
         $('.board-box').empty();
         /*
