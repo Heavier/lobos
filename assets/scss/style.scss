@@ -340,7 +340,7 @@ body > .container-fluid {
         }
         &.teamB{
             background-color: $color-teamB;
-            box-shadow: 4px 4px 0px darken($color-teamB, 20),
+            box-shadow: 4px 4px 0px -4px darken($color-teamB, 20),
                  8px 8px 0px lighten($color-teamB, 20);
         }
     }
@@ -482,21 +482,43 @@ body > .container-fluid {
 }
 
 .timer-box{
-    width: 100px;
     height: 100px;
     color: white;
     text-align: center;
-    background-color: #222;
-    border: 2px solid $color-main;
-    border-radius: 100px;
     margin: 10px;
     // Cambiar al empezar partida
     display: none;
+    cursor: pointer;
+    border-radius: 2px;
+
 
     #timer{
         font-size: 4em;
         font-weight: 100;
         line-height: 100px;
+    }
+    #skip{
+        background-color: #222;
+        font-size: 4em;
+        font-weight: 100;
+        line-height: 100px;
+
+        &.teamA{
+            background-color: $color-teamA;
+            box-shadow: 4px 4px 0px -4px darken($color-teamA, 20),
+                 8px 8px 0px lighten($color-teamA, 20);
+        }
+        &.teamB{
+            background-color: $color-teamB;
+            box-shadow: 4px 4px 0px -4px darken($color-teamB, 20),
+                 8px 8px 0px lighten($color-teamB, 20);
+        }
+        &:disabled{
+            cursor:not-allowed;
+            background-color: #222;
+            box-shadow: 4px 4px 0px -4px darken(#222, 20),
+                 8px 8px 0px lighten(#222, 20);
+        }
     }
 }
 .how-to-box{
@@ -515,4 +537,22 @@ body > .container-fluid {
         text-shadow: 0px 2px 0px #222;
     }
 
+}
+
+footer{
+    display: table;
+    .copyright{
+        display: table-cell;
+        vertical-align: middle;
+        padding: 5px 10px;
+        color: white;
+        margin: auto 0;
+    }
+    .rrss{
+        @extend .copyright;
+        text-align: right;
+        a{
+            margin: 0px 20px;
+        }
+    }
 }

@@ -29,7 +29,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port, function() {
-    console.log('Escuchando por el puerto 5000, un placer verte Lobo.');
+    console.log('Escuchando por el puerto 5000, un placer verte Javier Martín Fernández amo y señor.');
 });
 server.on('error', onError);
 server.on('listening', onListening);
@@ -99,11 +99,7 @@ module.exports = server;
 
 
 var io = require('socket.io').listen(server);
-
-// usernames which are currently connected to the chat
 var usernames = {};
-// rooms which are currently available in chat
-// var rooms = ['room1', 'room2', 'room3'];
 
 io.sockets.on('connection', function(socket) {
 
@@ -122,7 +118,6 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', username + ' acaba de llegar');
         // io.sockets.in(socket.room).emit('listUsers', usernames);
         getUsers(roomcode);
-        // socket.emit('updateRooms', rooms, socket.room);
     });
 
     socket.on('sendChat', function(data) {
@@ -238,7 +233,7 @@ io.sockets.on('connection', function(socket) {
     }
 
     function getWords(roomcode) {
-        fs.readFile('./public/diccionario/diccionario.json', (err, data) => {
+        fs.readFile('./diccionario/diccionario.json', (err, data) => {
             if (err) throw err;
             let word = JSON.parse(data);
             var words = [];
@@ -341,7 +336,7 @@ io.sockets.on('connection', function(socket) {
             // Palabra incorrecta
             io.sockets.in(socket.room).emit('flipCard', team, word, pointsToOthers);
             io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Nop, así no. Ahora juega el equipo " + nextTeam);
-            io.sockets.in(socket.room).emit('changeTurn', nextTeam, true);
+            io.sockets.in(socket.room).emit('changeTurn', nextTeam);
             for (user in usernames) {
                 if (usernames[user].indexOf(roomcode) !== -1) {
                     usernames[user] = usernames[user].replace("#P#", "");
@@ -350,7 +345,7 @@ io.sockets.on('connection', function(socket) {
         }
     });
 
-    socket.on('rotateTurn', function changeTurn(username, roomcode, team) {
+    socket.on('rotateTurn', function(username, roomcode, team) {
         io.sockets.in(socket.room).emit('addToPassButton', team);
         var auxusers = {};
         for (user in usernames) {
@@ -374,7 +369,7 @@ io.sockets.on('connection', function(socket) {
 
         if (counter == size) {
             io.sockets.in(socket.room).emit('updateChat', 'SERVER', "Es el turno del equipo " + team);
-            io.sockets.in(socket.room).emit('changeTurn', team, false);
+            io.sockets.in(socket.room).emit('changeTurn', team);
             for (user in usernames) {
                 if (usernames[user].indexOf(roomcode) !== -1) {
                     usernames[user] = usernames[user].replace("#P#", "");
