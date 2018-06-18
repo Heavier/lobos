@@ -3,10 +3,50 @@
 @import 'lib/bootstrap/bootstrap';
 
 .logo{
-    height: 100px;
-    width: 100px;
-    background-color: $color-main;
+    height: 150px;
+    font-size: 5em;
+    text-align: center;
+    color: white;
+    font-weight: 900;
     margin: 40px auto;
+    text-shadow: 5px 5px #aaa,
+        10px 10px #777,
+        15px 15px #555,
+        20px 20px #222;
+    animation: shadows 1s ease-in-out 0s infinite normal;
+
+    @keyframes shadows{
+        from{
+            text-shadow: 5px 5px  #222,
+                10px 10px #aaa,
+                15px 15px #777,
+                20px 20px #555;
+        }
+        25%{
+            text-shadow: 5px 5px #555,
+                10px 10px #222,
+                15px 15px #aaa,
+                20px 20px #777;
+        }
+        50%{
+            text-shadow: 5px 5px #777,
+                10px 10px #555,
+                15px 15px #222,
+                20px 20px #aaa;
+        }
+        75%{
+            text-shadow: 5px 5px #aaa,
+                10px 10px #777,
+                15px 15px #555,
+                20px 20px #222;
+        }
+        to{
+            text-shadow: 5px 5px  #222,
+                10px 10px #aaa,
+                15px 15px #777,
+                20px 20px #555;
+        }
+    }
 }
 
 .login{
@@ -90,6 +130,10 @@ header {
     position: fixed;
     left: 0;
     top: 0;
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    font-weight: 900;
 }
 footer {
     position: absolute;
