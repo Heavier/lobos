@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('game', { title: 'Lobos · Por Javier Martín F.' });
+  res.render('game', { title: 'Orion · Por Javier Martín F.' });
 });
 
 module.exports = router;

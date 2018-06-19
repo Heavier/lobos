@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     res.clearCookie("name");
     res.clearCookie("room");
     res.render('index', {
-        title: 'Lobos'
+        title: 'Orion'
     });
 });
 
